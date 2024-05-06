@@ -26,7 +26,7 @@ def get_response(question):
 
     {context}
 
-    Please provide the most suitable response for the users question and if there is a link associated with the question display it.
+    Please provide the most suitable response for the users question and if there is a link associated with the question display it. change https links to actual working link
     Answer:"""
 
     prompt = PromptTemplate(
