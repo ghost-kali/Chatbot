@@ -15,7 +15,9 @@ const createChatLi = (message, className) => {
     chatLi.classList.add("chat", `${className}`);
     let chatContent = className === "outgoing" ? `<p></p>` : `<span class=""><img src="./IMG_20240503_090818-removebg-preview.png" height="35vh"  alt=""></span><p></p>`;
     chatLi.innerHTML = chatContent;
-    chatLi.querySelector("p").textContent = message;
+    const messageWithLinks = message.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+    chatLi.querySelector("p").innerHTML = messageWithLinks;
+    
     return chatLi; // return chat <li> element
 }
 
@@ -35,7 +37,7 @@ const generateResponse = (chatElement) => {
           'Content-Type': 'application/json'
         },
       }).then(res => res.json()).then(data => {
-        messageElement.textContent = data.answer.trim();
+        messageElement.innerHTML = data.answer.trim().replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');;
     }).catch(() => {
         messageElement.classList.add("error");
         messageElement.textContent = "Oops! Something went wrong. Please try again.";

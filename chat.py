@@ -10,7 +10,7 @@ from langchain.schema import HumanMessage
 
 load_dotenv(find_dotenv())
 
-loader = TextLoader("E:/SMVEC-chatbot/smvecdataset.txt")
+loader = TextLoader("C:/Users/TAMIM M/Downloads/create-chatbot-html-css-javascript/Chatbot/smvecdataset.txt")
 documents = loader.load()
 text_splitter = CharacterTextSplitter(chunk_size=900, chunk_overlap=500)
 texts = text_splitter.split_documents(documents)
