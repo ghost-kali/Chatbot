@@ -44,6 +44,7 @@ def get_response(question):
     except Exception as e:
         print(f"Error occurred: {e}")
         return ("Sorry, I was unable to process your question.")
+    
 
 if __name__ == "__main__":
     
