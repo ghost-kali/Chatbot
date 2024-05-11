@@ -13,17 +13,40 @@ const createChatLi = (message, className) => {
     // Create a chat <li> element with passed message and className
     const chatLi = document.createElement("li");
     chatLi.classList.add("chat", `${className}`);
-    let chatContent = className === "outgoing" ? `<p></p>` : `<span class=""><img src="./IMG_20240503_090818-removebg-preview.png" height="35vh"  alt=""></span><p></p>`;
+    let chatContent = className === "outgoing" ? ` <p></p>` : `<span class=""><img src="./IMG_20240503_090818-removebg-preview.png" height="35vh"  alt=""></span><p></p>`;
     chatLi.innerHTML = chatContent;
-    const messageWithLinks = message.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+    const messageWithLinks = message.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">Download here</a>');
+    
     chatLi.querySelector("p").innerHTML = messageWithLinks;
     
     return chatLi; // return chat <li> element
 }
 
-const generateResponse = (chatElement) => {
-    const API_URL = "https://api.openai.com/v1/chat/completions";
-    const messageElement = chatElement.querySelector("p");
+const createLoadingLi = (className) =>{
+
+    const LoadingLi = document.createElement("li");
+    LoadingLi.classList.add("chat",`${className}`);
+    let chatContent = ` <div class="messages__item messages__item--typing" id="GFG_DIV">
+    <span class="messages__dot"></span>
+    <span class="messages__dot"></span>
+    <span class="messages__dot"></span>
+</div>`
+LoadingLi.innerHTML = chatContent;
+return LoadingLi;
+
+}
+const genTest = () => {
+    const incomingChatLi = createChatLi('', "incoming");
+    const messageElement = incomingChatLi.querySelector("p");
+    messageElement.textContent = "Hello";
+    return incomingChatLi;
+}
+
+
+
+const generateResponse = (incomingChatLi) => {
+   
+    const messageElement = incomingChatLi.querySelector("p");
 
     // Define the properties and message for the API request
  
@@ -37,11 +60,18 @@ const generateResponse = (chatElement) => {
           'Content-Type': 'application/json'
         },
       }).then(res => res.json()).then(data => {
-        messageElement.innerHTML = data.answer.trim().replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');;
+        let div = document.getElementById('GFG_DIV');
+         div.parentNode.removeChild(div);
+        messageElement.innerHTML = data.answer.trim().replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">Download here</a>');;
+        chatbox.appendChild(incomingChatLi);
     }).catch(() => {
+           let div = document.getElementById('GFG_DIV');
+         div.parentNode.removeChild(div);
         messageElement.classList.add("error");
         messageElement.textContent = "Oops! Something went wrong. Please try again.";
-    }).finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
+        chatbox.appendChild(incomingChatLi);
+    }).finally(() => {chatbox.scrollTo(0, chatbox.scrollHeight);});
+
 }
 
 const handleChat = () => {
@@ -55,14 +85,17 @@ const handleChat = () => {
     // Append the user's message to the chatbox
     chatbox.appendChild(createChatLi(userMessage, "outgoing"));
     chatbox.scrollTo(0, chatbox.scrollHeight);
-    
+    chatbox.appendChild(createLoadingLi("outgoing"));
+    chatbox.scrollTo(0, chatbox.scrollHeight);
+    const incomingChatLi = createChatLi('', "incoming");
+    generateResponse(incomingChatLi);
     setTimeout(() => {
         // Display "Thinking..." message while waiting for the response
-        const incomingChatLi = createChatLi("Thinking...", "incoming");
-        chatbox.appendChild(incomingChatLi);
-        chatbox.scrollTo(0, chatbox.scrollHeight);
-        generateResponse(incomingChatLi);
-    }, 600);
+        
+       
+        
+        
+    }, 10000);
 }
 
 chatInput.addEventListener("input", () => {
