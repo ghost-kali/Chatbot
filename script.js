@@ -15,7 +15,7 @@ const createChatLi = (message, className) => {
     chatLi.classList.add("chat", `${className}`);
     let chatContent = className === "outgoing" ? ` <p></p>` : `<span class=""><img src="./IMG_20240503_090818-removebg-preview.png" height="35vh"  alt=""></span><p></p>`;
     chatLi.innerHTML = chatContent;
-    const messageWithLinks = message.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">Download here</a>');
+    const messageWithLinks = message.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">Click here</a>');
     
     chatLi.querySelector("p").innerHTML = messageWithLinks;
     
@@ -62,7 +62,7 @@ const generateResponse = (incomingChatLi) => {
       }).then(res => res.json()).then(data => {
         let div = document.getElementById('GFG_DIV');
          div.parentNode.removeChild(div);
-        messageElement.innerHTML = data.answer.trim().replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">Download here</a>');;
+        messageElement.innerHTML = data.answer.trim().replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">Click here</a>');;
         chatbox.appendChild(incomingChatLi);
     }).catch(() => {
            let div = document.getElementById('GFG_DIV');

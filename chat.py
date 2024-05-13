@@ -22,11 +22,12 @@ def get_response(question):
     retriever = Chroma.from_documents(texts, embeddings).as_retriever()
     chat = ChatOpenAI(temperature=0)
 
-    prompt_template = """You are a helpful dicord bot that helps users to know a college named Sri Mankula Vinayagar Engineering College and you must also work as a ChatGPT-clone for common questions.
+    prompt_template = """You are a helpful bot that helps users to know a college named Sri Mankula Vinayagar Engineering College.
 
     {context}
 
-    Please provide the most suitable response for the users question and if there is a link associated with the question display it. change https links to actual working link
+    Please provide the most suitable response for the users question and give the link if asked for downloading link.
+    If questions asked about syllabus and curriculum, give me answers in bulletin points.
     Answer:"""
 
     prompt = PromptTemplate(
@@ -49,4 +50,4 @@ def get_response(question):
 if __name__ == "__main__":
     
 
-    get_response("hello")
+    get_response("csbs hod")
